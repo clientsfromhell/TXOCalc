@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>台指選擇權計算機</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script>
+        function TXO() {
+            let amount=Number(document.getElementById("amount").value);
+            let fee=Number(document.getElementById("fee").value);
+            let buyprice=Number(document.getElementById("buyprice").value);
+            let sellprice=Number(document.getElementById("sellprice").value);
+            let cost=buyprice*50*amount;
+            let buyfee=fee*amount;
+            let clearfee=fee*amount;
+            
+            let tax=Math.round((buyprice*50)*0.001)*amount+Math.round((sellprice*50)*0.001*amount);
+            let income=sellprice*50*amount;
+            
+            if(income<1)
+            {
+                income=0;
+                tax=0;
+                clearfee=0;
+            }
+            let income2=income-buyfee-clearfee-tax;
+            let feetotal=buyfee+clearfee+tax;
+            let revenue=income2-cost;
+            if(revenue>=0)
+            {
+                revenue="+"+revenue;
+                document.getElementById("revenue").style.color="green";
+            } else {
+                document.getElementById("revenue").style.color="red";
+            }
+            document.getElementById("cost").innerText=cost;
+            document.getElementById("buyfee").innerText=buyfee;
+            document.getElementById("income").innerText=income;
+            document.getElementById("income2").innerText=income2;
+            document.getElementById("clearfee").innerText=clearfee;
+            document.getElementById("tax").innerText=tax;
+            document.getElementById("feetotal").innerText=feetotal;
+            document.getElementById("revenue").innerText=revenue;
+        }
+
+        function cal() {
+            let budget=Number(document.getElementById("budget").value);
+            let buyprice2=Number(document.getElementById("buyprice2").value);
+            let fee2=Number(document.getElementById("fee2").value);
+
+            let stopprofit=Number(document.getElementById("stopprofit").value);
+            let stoploose=Number(document.getElementById("stoploose").value);
+            let stop=Number(document.getElementById("stop").value);
+
+            let amt=Math.floor(budget/(buyprice2*50));
+            let per1=1*amt*50;
+            let per2=0.1*amt*50;
+            let cost2=amt*fee2*2 + amt*1*2;
+
+            let spp=stopprofit/(50*amt);
+            let slp=stoploose/(50*amt);
+            let sppp=spp+buyprice2;
+            let slpp=slp-buyprice2;
+
+            let balance=cost2/(50*amt);
+            let balanceprice=buyprice2+balance;
+            
+            let stp=stop/amt;
+            let stpp=buyprice2-stp;
+
+            let noneed=cost2/(50*amt);
+            let noneedp=noneed-buyprice2;
+
+            document.getElementById("amt").innerText=amt;
+            document.getElementById("per1").innerText=per1;
+            document.getElementById("per2").innerText=per2;
+            document.getElementById("cost2").innerText=cost2;
+            document.getElementById("spp").innerText="+"+spp+"，即"+sppp;
+            document.getElementById("slp").innerText="-"+slp+"，即"+slpp;
+            document.getElementById("balance").innerText="+"+balance+"，即"+balanceprice;
+            document.getElementById("stp").innerText="-"+stp+"，即"+stpp;
+            document.getElementById("noneed").innerText=noneed+"點 ("+noneedp+"點)";
+        }
+    </script>
+</head>
+<style>
+    .blocktext {
+        margin-left: auto;
+        margin-right: auto;
+        width: 50em
+    }
+</style>
+
+<body>
+    <div class="blocktext">
+        <h1 class="text-center">台指選擇權計算機</h1>
+        <h2 class="text-center">買方損益試算</h2>
+        <form class="form" onSubmit="return false;">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="">買進均價</label>
+                    <input class="form-control" placeholder="點" type="text" id="buyprice" value="20" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">賣出均價</label>
+                    <input class="form-control" placeholder="點" type="text" id="sellprice" value="30" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="">口數</label>
+                    <input class="form-control" placeholder="口數" type="text" id="amount" value="10" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">手續費(單邊)</label>
+                    <input class="form-control" placeholder="元/口" type="text" id="fee" value="16" />
+                </div>
+            </div>
+            <button onclick="TXO()" class="btn btn-primary">計算損益</button>
+        </form>
+        <div class="card">
+            <div class="card-body">
+                <h4>權利金成本：<span id="cost">?</span>元</h4>
+                <h4>買入手續費成本：<span id="buyfee">?</span>元</h4>
+                <h4>賣出手續費成本：<span id="clearfee">?</span>元</h4>
+                <h4>期交稅成本：<span id="tax">?</span>元</h4>
+                <h4>總支出成本：<span id="feetotal">?</span>元</h4>
+                <hr />
+                <h4>平倉收入：<span id="income">?</span>元</h4>
+                <h4>平倉扣除手續費與稅餘額：<span id="income2">?</span>元</h4>                
+                <h4>交易淨損益：<span id="revenue">?</span>元</h4>
+            </div>
+        </div>
+        <hr />
+        <h2 class="text-center">進場規劃試算</h2>
+        <form class="form" onSubmit="return false;">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="">總預算</label>
+                    <input class="form-control" placeholder="元" type="text" id="budget" value="10000" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">買進均價</label>
+                    <input class="form-control" placeholder="點" type="text" id="buyprice2" value="5" />
+                </div>
+            </div>
+            <div class="form-row">
+                 <div class="form-group col-md-6">
+                    <label for="">最大停損點數</label>
+                    <input class="form-control" placeholder="元" type="text" id="stop" value="10" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">手續費(單邊)</label>
+                    <input class="form-control" placeholder="元/口" type="text" id="fee2" value="16" />
+                </div>
+            </div>
+            <div class="form-row">
+                 <div class="form-group col-md-6">
+                    <label for="">停利獲利金額</label>
+                    <input class="form-control" placeholder="元" type="text" id="stopprofit" value="20000" />
+                </div>
+                 <div class="form-group col-md-6">
+                    <label for="">最大停損金額</label>
+                    <input class="form-control" placeholder="元" type="text" id="stoploose" value="10000" />
+                </div>
+            </div>
+            <button onclick="cal()" class="btn btn-primary">計算</button>
+        </form>
+        <div class="card">
+            <div class="card-body">
+                <h4>最多可買：<span id="amt">?</span>口</h4>
+                <h4>漲跌1點損益：<span id="per1">?</span>元</h4>
+                <h4>漲跌0.1點損益：<span id="per2">?</span>元</h4>
+                <h4>最低平倉成本(手續費+稅雙邊)：<span id="cost2">?</span>元</h4>
+                <h4>停損點位(根據最大停損點數)：<span id="stp">?</span>點</h4>
+                <h4>停利點位(根據停利獲利金額)：<span id="spp">?</span>點</h4>
+                <h4>停損點位(根據最大停損金額)：<span id="slp">?</span>點</h4>
+                <hr />
+                <h4>損益兩平點位(獲利=平倉成本)：<span id="balance">?</span>點</h4>
+                <h4>跌破此點位無需平倉(殘值<交易成本)：<span id="noneed">?</span></h4>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
