@@ -32,34 +32,34 @@
             let fpremiumhalf = document.getElementById("fpremiumhalf");
             let frevenue = document.getElementById("frevenue");
             
-            fcost.innerText=DEFAULT_MARGIN*famount;
-            fcosthalf.innerText=DEFAULT_MARGIN/2*famount;
+            fcost.innerText=(DEFAULT_MARGIN*famount).toLocaleString();
+            fcosthalf.innerText=(DEFAULT_MARGIN/2*famount).toLocaleString();
             let tbfee=famount*ffee;
             let tcfee=famount*ffee;
             let ttax=Math.floor(fbuyprice*famount*0.00002*200)+Math.floor(fsellprice*famount*0.00002*200);
             let tfeetotal=tbfee+tcfee+ttax;
-            fbuyfee.innerText=tbfee;
-            fclearfee.innerText=tcfee;
-            ftax.innerText=ttax;
-            ffeetotal.innerText=tfeetotal;
+            fbuyfee.innerText=tbfee.toLocaleString();
+            fclearfee.innerText=tcfee.toLocaleString();
+            ftax.innerText=ttax.toLocaleString();
+            ffeetotal.innerText=tfeetotal.toLocaleString();
             
             let tfoincome=fbuyprice*famount*200;
             let tincome=fsellprice*famount*200;
-            foincome.innerText=tfoincome;
-            fincome.innerText=tincome;
+            foincome.innerText=tfoincome.toLocaleString();
+            fincome.innerText=tincome.toLocaleString();
 
             let tincome2=tincome-tfeetotal;
-            fincome2.innerText=tincome2;
+            fincome2.innerText=tincome2.toLocaleString();
             let tfrevenue=dir*(tincome2-tfoincome);
-            fpremium.innerText=DEFAULT_MARGIN*famount+tfrevenue;
-            fpremiumhalf.innerText=DEFAULT_MARGIN/2*famount+tfrevenue;
+            fpremium.innerText=(DEFAULT_MARGIN*famount+tfrevenue).toLocaleString()
+            fpremiumhalf.innerText=(DEFAULT_MARGIN/2*famount+tfrevenue).toLocaleString();
 
             if(tfrevenue>=0)
             {
-                frevenue.innerText="+"+tfrevenue;
+                frevenue.innerText="+"+(tfrevenue.toLocaleString());
                 document.getElementById("frevenue").style.color="green";
             } else {
-                frevenue.innerText=tfrevenue;
+                frevenue.innerText=tfrevenue.toLocaleString();
                 document.getElementById("frevenue").style.color="red";
             }
 
@@ -67,11 +67,20 @@
             let flotdouble = document.getElementById("flotdouble");
             let fpremiumlot = document.getElementById("fpremiumlot");
             let fpremiumlotdouble = document.getElementById("fpremiumlotdouble");
+            let l1 = document.getElementById("leverage");
+            let l2 = document.getElementById("leveragedaytrade");
 
-            flot.innerText=bud2lot/DEFAULT_MARGIN;
-            flotdouble.innerText=bud2lot/(DEFAULT_MARGIN/2);
-            fpremiumlot.innerText=lot2premium*DEFAULT_MARGIN;
-            fpremiumlotdouble.innerText=lot2premium*(DEFAULT_MARGIN/2);
+            flot.innerText=(bud2lot/DEFAULT_MARGIN).toFixed(2);
+            flotdouble.innerText=(bud2lot/(DEFAULT_MARGIN/2)).toFixed(2);
+            fpremiumlot.innerText=(lot2premium*DEFAULT_MARGIN).toLocaleString();
+            fpremiumlotdouble.innerText=(lot2premium*(DEFAULT_MARGIN/2)).toLocaleString();
+
+            let leverage = (fbuyprice*200/DEFAULT_MARGIN).toFixed(2);
+            let leveragedaytrade = (fbuyprice*200/(DEFAULT_MARGIN/2)).toFixed(2);
+
+            l1.innerText=leverage;
+            l2.innerText=leveragedaytrade;
+
         }
 
         function TXO() {
@@ -97,18 +106,19 @@
             let revenue=income2-cost;
             if(revenue>=0)
             {
-                revenue="+"+revenue;
+                revenue="+"+(revenue.toLocaleString());
                 document.getElementById("revenue").style.color="green";
             } else {
+                revenue=revenue.toLocaleString();
                 document.getElementById("revenue").style.color="red";
             }
-            document.getElementById("cost").innerText=cost;
-            document.getElementById("buyfee").innerText=buyfee;
-            document.getElementById("income").innerText=income;
-            document.getElementById("income2").innerText=income2;
-            document.getElementById("clearfee").innerText=clearfee;
-            document.getElementById("tax").innerText=tax;
-            document.getElementById("feetotal").innerText=feetotal;
+            document.getElementById("cost").innerText=cost.toLocaleString();
+            document.getElementById("buyfee").innerText=buyfee.toLocaleString();
+            document.getElementById("income").innerText=income.toLocaleString();
+            document.getElementById("income2").innerText=income2.toLocaleString();
+            document.getElementById("clearfee").innerText=clearfee.toLocaleString();
+            document.getElementById("tax").innerText=tax.toLocaleString();
+            document.getElementById("feetotal").innerText=feetotal.toLocaleString();
             document.getElementById("revenue").innerText=revenue;
         }
 
@@ -129,8 +139,8 @@
 
             let spp=stopprofit/(50*amt);
             let slp=stoploose/(50*amt);
-            let sppp=spp+buyprice2;
-            let slpp=slp-buyprice2;
+            let sppp=buyprice2+spp;
+            let slpp=buyprice2-slp;
 
             let balance=cost2/(50*amt);
             let balanceprice=buyprice2+balance;
@@ -141,18 +151,18 @@
             let noneed=cost2/(50*amt);
             let noneedp=noneed-buyprice2;
 
-            document.getElementById("amt").innerText=amt;
-            document.getElementById("initcontractvalue").innerText=initcontractvalue;
-            document.getElementById("per1").innerText=per1;
-            document.getElementById("per2").innerText=per2;
-            document.getElementById("cost2").innerText=cost2;
-            document.getElementById("spp").innerText="+"+spp+"，即"+sppp;
-            document.getElementById("slp").innerText="-"+slp+"，即"+slpp;
+            document.getElementById("amt").innerText=amt.toLocaleString();
+            document.getElementById("initcontractvalue").innerText=initcontractvalue.toLocaleString();
+            document.getElementById("per1").innerText=per1.toLocaleString();
+            document.getElementById("per2").innerText=per2.toLocaleString();
+            document.getElementById("cost2").innerText=cost2.toLocaleString();
+            document.getElementById("spp").innerText="+"+(spp).toFixed(3)+"，即"+(sppp).toFixed(3);
+            document.getElementById("slp").innerText="-"+(slp).toFixed(3)+"，即"+(slpp).toFixed(3);
+            document.getElementById("stp").innerText="-"+(stp).toFixed(3)+"，即"+(stpp).toFixed(3);
+            document.getElementById("b").innerText=(sppp+noneed).toFixed(3);
+            document.getElementById("a").innerText=(stpp+noneed).toFixed(3);
+            document.getElementById("c").innerText=(slpp+noneed).toFixed(3);
             document.getElementById("balance").innerText="+"+balance+"，即"+balanceprice;
-            document.getElementById("stp").innerText="-"+stp+"，即"+stpp;
-            document.getElementById("a").innerText=stpp-noneed;
-            document.getElementById("b").innerText=sppp+noneed;
-            document.getElementById("c").innerText=slpp-noneed;
             document.getElementById("noneed").innerText=noneed+"點 ("+noneedp+"點)";
         }
     </script>
@@ -213,7 +223,7 @@
                         <h4>預算可做大台口數：<span id="flot">?</span>口，當沖口數：<span id="flotdouble">?</span>口</h4>
                         <h4>口數轉保證金：<span id="fpremiumlot">?</span>元，當沖保證金需：<span id="fpremiumlotdouble">?</span>元</h4>
                         <hr />
-                        <h4>保證金成本：<span id="fcost">?</span>元，當沖保證金成本：<span id="fcosthalf">?</span>元</h4>
+                        <h4>保證金成本：<span id="fcost">?</span>元(<span id="leverage">?</span>x)，當沖保證金成本：<span id="fcosthalf">?</span>元(<span id="leveragedaytrade">?</span>x)</h4>
                         <h4>買入手續費成本：<span id="fbuyfee">?</span>元</h4>
                         <h4>賣出手續費成本：<span id="fclearfee">?</span>元</h4>
                         <h4>期交稅成本：<span id="ftax">?</span>元</h4>
@@ -275,7 +285,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">總預算</label>
-                            <input class="form-control" placeholder="元" type="text" id="budget" value="10000" />
+                            <input class="form-control" placeholder="元" type="text" id="budget" value="100000" />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">買進均價</label>
@@ -295,7 +305,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">最大停損點數</label>
-                            <input class="form-control" placeholder="元" type="text" id="stop" value="10" />
+                            <input class="form-control" placeholder="元" type="text" id="stop" value="200" />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">最大停損金額</label>
@@ -311,9 +321,9 @@
                         <h4>漲跌0.1點損益：<span id="per2">?</span>元</h4>
                         <h4>最低平倉成本(手續費+稅雙邊)：<span id="cost2">?</span>元</h4>
                         <hr />
-                        <h4>停利點位(根據最小停利金額)：<span id="spp">?</span>點，若計入平倉成本為<span id="b">?</span>點</h4>
-                        <h4>停損點位(根據最大停損點數)：<span id="stp">?</span>點，若計入平倉成本為<span id="a">?</span>點</h4>
-                        <h4>停損點位(根據最大停損金額)：<span id="slp">?</span>點，若計入平倉成本為<span id="c">?</span>點</h4>
+                        <h4>停利點位(依最小停利金額)：<span id="spp">?</span>點，若計入平倉成本為<span id="b">?</span>點</h4>
+                        <h4>停損點位(依最大停損點數)：<span id="stp">?</span>點，若計入平倉成本為<span id="a">?</span>點</h4>
+                        <h4>停損點位(依最大停損金額)：<span id="slp">?</span>點，若計入平倉成本為<span id="c">?</span>點</h4>
                         <hr />
                         <h4>損益兩平點位(獲利=平倉成本)：<span id="balance">?</span>點</h4>
                         <h4>跌破此點位無需平倉(殘值<交易成本)：<span id="noneed">?</span></h4>
