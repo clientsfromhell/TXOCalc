@@ -9,7 +9,69 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script>
         function TX() {
+            let DEFAULT_MARGIN=150000;
+            let bud2lot = Number(document.getElementById("bud2lot").value);
+            let lot2premium = Number(document.getElementById("lot2premium").value);
 
+            let fbuyprice = Number(document.getElementById("fbuyprice").value);
+            let fsellprice = Number(document.getElementById("fsellprice").value);
+            let famount = Number(document.getElementById("famount").value);
+            let ffee = Number(document.getElementById("ffee").value);
+            let e = document.getElementById("dir");
+            let dir = Number(e.options[e.selectedIndex].value);
+            let fcost = document.getElementById("fcost");
+            let fcosthalf = document.getElementById("fcosthalf");
+            let fbuyfee = document.getElementById("fbuyfee");
+            let fclearfee = document.getElementById("fclearfee");
+            let ftax = document.getElementById("ftax");
+            let ffeetotal = document.getElementById("ffeetotal");
+            let foincome = document.getElementById("foincome");
+            let fincome = document.getElementById("fincome");
+            let fincome2 = document.getElementById("fincome2");
+            let fpremium = document.getElementById("fpremium");
+            let fpremiumhalf = document.getElementById("fpremiumhalf");
+            let frevenue = document.getElementById("frevenue");
+            
+            fcost.innerText=DEFAULT_MARGIN*famount;
+            fcosthalf.innerText=DEFAULT_MARGIN/2*famount;
+            let tbfee=famount*ffee;
+            let tcfee=famount*ffee;
+            let ttax=Math.floor(fbuyprice*famount*0.00002*200)+Math.floor(fsellprice*famount*0.00002*200);
+            let tfeetotal=tbfee+tcfee+ttax;
+            fbuyfee.innerText=tbfee;
+            fclearfee.innerText=tcfee;
+            ftax.innerText=ttax;
+            ffeetotal.innerText=tfeetotal;
+            
+            let tfoincome=fbuyprice*famount*200;
+            let tincome=fsellprice*famount*200;
+            foincome.innerText=tfoincome;
+            fincome.innerText=tincome;
+
+            let tincome2=tincome-tfeetotal;
+            fincome2.innerText=tincome2;
+            let tfrevenue=dir*(tincome2-tfoincome);
+            fpremium.innerText=DEFAULT_MARGIN*famount+tfrevenue;
+            fpremiumhalf.innerText=DEFAULT_MARGIN/2*famount+tfrevenue;
+
+            if(tfrevenue>=0)
+            {
+                frevenue.innerText="+"+tfrevenue;
+                document.getElementById("frevenue").style.color="green";
+            } else {
+                frevenue.innerText=tfrevenue;
+                document.getElementById("frevenue").style.color="red";
+            }
+
+            let flot = document.getElementById("flot");
+            let flotdouble = document.getElementById("flotdouble");
+            let fpremiumlot = document.getElementById("fpremiumlot");
+            let fpremiumlotdouble = document.getElementById("fpremiumlotdouble");
+
+            flot.innerText=bud2lot/DEFAULT_MARGIN;
+            flotdouble.innerText=bud2lot/(DEFAULT_MARGIN/2);
+            fpremiumlot.innerText=lot2premium*DEFAULT_MARGIN;
+            fpremiumlotdouble.innerText=lot2premium*(DEFAULT_MARGIN/2);
         }
 
         function TXO() {
@@ -95,102 +157,168 @@
         }
     </script>
 </head>
-<style>
-    .blocktext {
-        margin-left: auto;
-        margin-right: auto;
-        width: 50em
-    }
-</style>
 
-<body>
-    <div class="blocktext">
-        <h1 class="text-center">台指選擇權計算機</h1>
-        <h2 class="text-center">買方損益試算</h2>
-        <form class="form" onSubmit="return false;">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="">買進均價</label>
-                    <input class="form-control" placeholder="點" type="text" id="buyprice" value="20" />
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="">賣出均價</label>
-                    <input class="form-control" placeholder="點" type="text" id="sellprice" value="30" />
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="">口數</label>
-                    <input class="form-control" placeholder="口數" type="text" id="amount" value="10" />
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="">手續費(單邊)</label>
-                    <input class="form-control" placeholder="元/口" type="text" id="fee" value="16" />
-                </div>
-            </div>
-            <button onclick="TXO()" class="btn btn-primary">計算損益</button>
-        </form>
-        <div class="card">
-            <div class="card-body">
-                <h4>權利金成本：<span id="cost">?</span>元</h4>
-                <h4>買入手續費成本：<span id="buyfee">?</span>元</h4>
-                <h4>賣出手續費成本：<span id="clearfee">?</span>元</h4>
-                <h4>期交稅成本：<span id="tax">?</span>元</h4>
-                <h4>總支出成本：<span id="feetotal">?</span>元</h4>
-                <hr />
-                <h4>平倉收入：<span id="income">?</span>元</h4>
-                <h4>平倉扣除手續費與稅餘額：<span id="income2">?</span>元</h4>                
-                <h4>交易淨損益：<span id="revenue">?</span>元</h4>
+<body onload="TX()">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="text-center">台指期權計算機</h1>
             </div>
         </div>
-        <hr />
-        <h2 class="text-center">買方進場規劃試算</h2>
-        <form class="form" onSubmit="return false;">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="">總預算</label>
-                    <input class="form-control" placeholder="元" type="text" id="budget" value="10000" />
+        <div class="row">
+            <div class="col-xs-4">
+                <h2 class="text-center">台指大台期貨損益試算</h2>
+                <form class="form" onSubmit="return false;">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="">預算轉口數</label>
+                            <input class="form-control" placeholder="元" type="text" id="bud2lot" value="1500000" onkeyup="TX()" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">口數轉保證金</label>
+                            <input class="form-control" placeholder="口" type="text" id="lot2premium" value="100" onkeyup="TX()" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="">買進均價</label>
+                            <input class="form-control" placeholder="點" type="text" id="fbuyprice" value="15800" onkeyup="TX()" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">賣出均價</label>
+                            <input class="form-control" placeholder="點" type="text" id="fsellprice" value="16000" onkeyup="TX()" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="">口數</label>
+                            <input class="form-control" placeholder="口數" type="text" id="famount" value="5" onkeyup="TX()" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="">手續費(單邊)</label>
+                            <input class="form-control" placeholder="元/口" type="text" id="ffee" value="38" onkeyup="TX()" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="">方向</label>
+                            <select id="dir" class="form-control" onkeyup="TX()">
+                                <option value="1" selected>買進</option>
+                                <option value="-1">賣出</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <button onclick="TX()" class="btn btn-primary">試算損益</button> -->
+                </form>
+                <div class="card">
+                    <div class="card-body">
+                        <h4>預算可做大台口數：<span id="flot">?</span>口，當沖口數：<span id="flotdouble">?</span>口</h4>
+                        <h4>口數轉保證金：<span id="fpremiumlot">?</span>元，當沖保證金需：<span id="fpremiumlotdouble">?</span>元</h4>
+                        <hr />
+                        <h4>保證金成本：<span id="fcost">?</span>元，當沖保證金成本：<span id="fcosthalf">?</span>元</h4>
+                        <h4>買入手續費成本：<span id="fbuyfee">?</span>元</h4>
+                        <h4>賣出手續費成本：<span id="fclearfee">?</span>元</h4>
+                        <h4>期交稅成本：<span id="ftax">?</span>元</h4>
+                        <h4>總支出成本：<span id="ffeetotal">?</span>元</h4>
+                        <hr />
+                        <h4>原契約價值：<span id="foincome">?</span>元</h4>
+                        <h4>平倉契約價值：<span id="fincome">?</span>元</h4>
+                        <h4>平倉扣除手續費與稅餘額：<span id="fincome2">?</span>元</h4>
+                        <hr />
+                        <h4>保證金餘額：<span id="fpremium">?</span>元，當沖保證金餘額：<span id="fpremiumhalf">?</span></h4>
+                        <h4>交易淨損益：<span id="frevenue">?</span>元</h4>
+                    </div>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="">買進均價</label>
-                    <input class="form-control" placeholder="點" type="text" id="buyprice2" value="5" />
-                </div>
-            </div>
-            <div class="form-row">
-                 <div class="form-group col-md-6">
-                    <label for="">最小停利金額</label>
-                    <input class="form-control" placeholder="元" type="text" id="stopprofit" value="20000" />
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="">手續費(單邊)</label>
-                    <input class="form-control" placeholder="元/口" type="text" id="fee2" value="16" />
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="">最大停損點數</label>
-                    <input class="form-control" placeholder="元" type="text" id="stop" value="10" />
-                </div>
-                 <div class="form-group col-md-6">
-                    <label for="">最大停損金額</label>
-                    <input class="form-control" placeholder="元" type="text" id="stoploose" value="10000" />
-                </div>
-            </div>
-            <button onclick="cal()" class="btn btn-primary">計算</button>
-        </form>
-        <div class="card">
-            <div class="card-body">
-                <h4>最多可買：<span id="amt">?</span>口，總契約價值<span id="initcontractvalue">?</span>元</h4>
-                <h4>漲跌1點損益：<span id="per1">?</span>元</h4>
-                <h4>漲跌0.1點損益：<span id="per2">?</span>元</h4>
-                <h4>最低平倉成本(手續費+稅雙邊)：<span id="cost2">?</span>元</h4>
                 <hr />
-                <h4>停利點位(根據最小停利金額)：<span id="spp">?</span>點，若計入平倉成本為<span id="b">?</span>點</h4>
-                <h4>停損點位(根據最大停損點數)：<span id="stp">?</span>點，若計入平倉成本為<span id="a">?</span>點</h4>
-                <h4>停損點位(根據最大停損金額)：<span id="slp">?</span>點，若計入平倉成本為<span id="c">?</span>點</h4>
+            </div>
+            <div class="col-xs-4">
+                <h2 class="text-center">選擇權買方損益試算</h2>
+                <form class="form" onSubmit="return false;">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="">買進均價</label>
+                            <input class="form-control" placeholder="點" type="text" id="buyprice" value="20" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">賣出均價</label>
+                            <input class="form-control" placeholder="點" type="text" id="sellprice" value="30" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="">口數</label>
+                            <input class="form-control" placeholder="口數" type="text" id="amount" value="10" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">手續費(單邊)</label>
+                            <input class="form-control" placeholder="元/口" type="text" id="fee" value="16" />
+                        </div>
+                    </div>
+                    <button onclick="TXO()" class="btn btn-primary">試算損益</button>
+                </form>
+                <div class="card">
+                    <div class="card-body">
+                        <h4>權利金成本：<span id="cost">?</span>元</h4>
+                        <h4>買入手續費成本：<span id="buyfee">?</span>元</h4>
+                        <h4>賣出手續費成本：<span id="clearfee">?</span>元</h4>
+                        <h4>期交稅成本：<span id="tax">?</span>元</h4>
+                        <h4>總支出成本：<span id="feetotal">?</span>元</h4>
+                        <hr />
+                        <h4>平倉收入：<span id="income">?</span>元</h4>
+                        <h4>平倉扣除手續費與稅餘額：<span id="income2">?</span>元</h4>
+                        <h4>交易淨損益：<span id="revenue">?</span>元</h4>
+                    </div>
+                </div>
                 <hr />
-                <h4>損益兩平點位(獲利=平倉成本)：<span id="balance">?</span>點</h4>
-                <h4>跌破此點位無需平倉(殘值<交易成本)：<span id="noneed">?</span></h4>
+            </div>
+            <div class="col-xs-4">
+                <h2 class="text-center">選擇權買方進場規劃試算</h2>
+                <form class="form" onSubmit="return false;">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="">總預算</label>
+                            <input class="form-control" placeholder="元" type="text" id="budget" value="10000" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">買進均價</label>
+                            <input class="form-control" placeholder="點" type="text" id="buyprice2" value="5" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="">最小停利金額</label>
+                            <input class="form-control" placeholder="元" type="text" id="stopprofit" value="20000" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">手續費(單邊)</label>
+                            <input class="form-control" placeholder="元/口" type="text" id="fee2" value="16" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="">最大停損點數</label>
+                            <input class="form-control" placeholder="元" type="text" id="stop" value="10" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">最大停損金額</label>
+                            <input class="form-control" placeholder="元" type="text" id="stoploose" value="10000" />
+                        </div>
+                    </div>
+                    <button onclick="cal()" class="btn btn-primary">試算</button>
+                </form>
+                <div class="card">
+                    <div class="card-body">
+                        <h4>最多可買：<span id="amt">?</span>口，總契約價值<span id="initcontractvalue">?</span>元</h4>
+                        <h4>漲跌1點損益：<span id="per1">?</span>元</h4>
+                        <h4>漲跌0.1點損益：<span id="per2">?</span>元</h4>
+                        <h4>最低平倉成本(手續費+稅雙邊)：<span id="cost2">?</span>元</h4>
+                        <hr />
+                        <h4>停利點位(根據最小停利金額)：<span id="spp">?</span>點，若計入平倉成本為<span id="b">?</span>點</h4>
+                        <h4>停損點位(根據最大停損點數)：<span id="stp">?</span>點，若計入平倉成本為<span id="a">?</span>點</h4>
+                        <h4>停損點位(根據最大停損金額)：<span id="slp">?</span>點，若計入平倉成本為<span id="c">?</span>點</h4>
+                        <hr />
+                        <h4>損益兩平點位(獲利=平倉成本)：<span id="balance">?</span>點</h4>
+                        <h4>跌破此點位無需平倉(殘值<交易成本)：<span id="noneed">?</span></h4>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
