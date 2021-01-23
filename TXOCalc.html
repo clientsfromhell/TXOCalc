@@ -10,6 +10,8 @@
     <script>
         function TX() {
             let DEFAULT_MARGIN=150000;
+            let SUSTAIN_MARGIN=115000;
+
             let bud2lot = Number(document.getElementById("bud2lot").value);
             let lot2premium = Number(document.getElementById("lot2premium").value);
 
@@ -48,9 +50,11 @@
             foincome.innerText=tfoincome.toLocaleString();
             fincome.innerText=tincome.toLocaleString();
 
-            let tincome2=tincome-tfeetotal;
+            let tincome2=tfoincome+((tincome-tfoincome)*dir)-tfeetotal;
             fincome2.innerText=tincome2.toLocaleString();
-            let tfrevenue=dir*(tincome2-tfoincome);
+
+            let tfrevenue=dir*(tincome-tfoincome)-tfeetotal;
+
             fpremium.innerText=(DEFAULT_MARGIN*famount+tfrevenue).toLocaleString()
             fpremiumhalf.innerText=(DEFAULT_MARGIN/2*famount+tfrevenue).toLocaleString();
 
@@ -69,6 +73,18 @@
             let fpremiumlotdouble = document.getElementById("fpremiumlotdouble");
             let l1 = document.getElementById("leverage");
             let l2 = document.getElementById("leveragedaytrade");
+            let frisk = document.getElementById("frisk");
+            let fsustain = document.getElementById("fsustain");
+            let fprem = document.getElementById("fprem");
+
+            let currentRev=dir*(fsellprice-fbuyprice)*famount*200;
+            let totalprem=(DEFAULT_MARGIN*famount)+currentRev;
+            let sustainpercentage=(totalprem/(SUSTAIN_MARGIN*famount))*100;
+            let friskindex=(totalprem/(DEFAULT_MARGIN*famount))*100;
+
+            fprem.innerText=totalprem.toLocaleString();
+            frisk.innerText=(friskindex).toFixed(2);
+            fsustain.innerText=(sustainpercentage).toFixed(2);
 
             flot.innerText=(bud2lot/DEFAULT_MARGIN).toFixed(2);
             flotdouble.innerText=(bud2lot/(DEFAULT_MARGIN/2)).toFixed(2);
@@ -191,18 +207,18 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="">買進均價</label>
-                            <input class="form-control" placeholder="點" type="text" id="fbuyprice" value="15800" onkeyup="TX()" />
+                            <label for="">成交均價</label>
+                            <input class="form-control" placeholder="點" type="text" id="fbuyprice" value="15950" onkeyup="TX()" />
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="">賣出均價</label>
-                            <input class="form-control" placeholder="點" type="text" id="fsellprice" value="16000" onkeyup="TX()" />
+                            <label for="">現價(平倉均價)</label>
+                            <input class="form-control" placeholder="點" type="text" id="fsellprice" value="15960" onkeyup="TX()" />
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="">口數</label>
-                            <input class="form-control" placeholder="口數" type="text" id="famount" value="5" onkeyup="TX()" />
+                            <input class="form-control" placeholder="口數" type="text" id="famount" value="1" onkeyup="TX()" />
                         </div>
                         <div class="form-group col-md-4">
                             <label for="">手續費(單邊)</label>
@@ -233,8 +249,17 @@
                         <h4>平倉契約價值：<span id="fincome">?</span>元</h4>
                         <h4>平倉扣除手續費與稅餘額：<span id="fincome2">?</span>元</h4>
                         <hr />
+                        <h4>權益總值：<span id="fprem">?</span></h4>
+                        <h4>維持比率：<span id="fsustain">?</span>% (維持比率<100%，將收到追繳通知)</h4>
+                        <h4>風險指標：<span id="frisk">?</span>% (風險指標<25%，將強制砍倉)</h4>
                         <h4>保證金餘額：<span id="fpremium">?</span>元，當沖保證金餘額：<span id="fpremiumhalf">?</span></h4>
                         <h4>交易淨損益：<span id="frevenue">?</span>元</h4>
+                        <hr />
+                        <ul>
+                            <li>盤中追繳將以簡訊、電話通知</li>
+                            <li>當權益數<維持保證金，將收到追繳通知，再細分為盤中追繳與盤後追繳，另台指夜盤無追繳通知</li>
+                            <li>盤後追繳：次一營業日中午12點整前需補足保證金至原始保證金，若未補足，12點整時風險指標也未高於100%，交易室將代為沖銷至風險指標高於100%</li>
+                        </ul>
                     </div>
                 </div>
                 <hr />
