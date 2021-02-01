@@ -184,7 +184,7 @@
     </script>
 </head>
 
-<body onload="TX()">
+<body onload="TX();TXO();cal();">
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12">
@@ -270,24 +270,24 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">買進均價</label>
-                            <input class="form-control" placeholder="點" type="text" id="buyprice" value="20" />
+                            <input class="form-control" placeholder="點" type="text" id="buyprice" value="20" onkeyup="TXO()" />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">賣出均價</label>
-                            <input class="form-control" placeholder="點" type="text" id="sellprice" value="30" />
+                            <input class="form-control" placeholder="點" type="text" id="sellprice" value="30" onkeyup="TXO()" />
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">口數</label>
-                            <input class="form-control" placeholder="口數" type="text" id="amount" value="10" />
+                            <input class="form-control" placeholder="口數" type="text" id="amount" value="10" onkeyup="TXO()" />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">手續費(單邊)</label>
-                            <input class="form-control" placeholder="元/口" type="text" id="fee" value="16" />
+                            <input class="form-control" placeholder="元/口" type="text" id="fee" value="16" onkeyup="TXO()" />
                         </div>
                     </div>
-                    <button onclick="TXO()" class="btn btn-primary">試算損益</button>
+                    <!-- <button onclick="TXO()" class="btn btn-primary">試算損益</button> -->
                 </form>
                 <div class="card">
                     <div class="card-body">
@@ -310,34 +310,34 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">總預算</label>
-                            <input class="form-control" placeholder="元" type="text" id="budget" value="100000" />
+                            <input class="form-control" placeholder="元" type="text" id="budget" value="100000" onkeyup="cal()" />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">買進均價</label>
-                            <input class="form-control" placeholder="點" type="text" id="buyprice2" value="5" />
+                            <input class="form-control" placeholder="點" type="text" id="buyprice2" value="5" onkeyup="cal()" />
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">最小停利金額</label>
-                            <input class="form-control" placeholder="元" type="text" id="stopprofit" value="20000" />
+                            <input class="form-control" placeholder="元" type="text" id="stopprofit" value="20000" onkeyup="cal()" />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">手續費(單邊)</label>
-                            <input class="form-control" placeholder="元/口" type="text" id="fee2" value="16" />
+                            <input class="form-control" placeholder="元/口" type="text" id="fee2" value="16" onkeyup="cal()" />
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="">最大停損點數</label>
-                            <input class="form-control" placeholder="元" type="text" id="stop" value="200" />
+                            <input class="form-control" placeholder="元" type="text" id="stop" value="200" onkeyup="cal()" />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="">最大停損金額</label>
-                            <input class="form-control" placeholder="元" type="text" id="stoploose" value="10000" />
+                            <input class="form-control" placeholder="元" type="text" id="stoploose" value="10000" onkeyup="cal()" />
                         </div>
                     </div>
-                    <button onclick="cal()" class="btn btn-primary">試算</button>
+                    <!-- <button onclick="cal()" class="btn btn-primary">試算</button> -->
                 </form>
                 <div class="card">
                     <div class="card-body">
